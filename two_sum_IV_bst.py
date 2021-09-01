@@ -54,8 +54,22 @@ class TreeNode:
 
 class Solution:
     def findTarget(self, root: Optional[TreeNode], k: int) -> bool:
-        return True
+        print(root)
+        if root.val == k:
+            return True
+        search_val = k - root.val
+        if search_val < root.val:
+            if root.left is not None:
+                if self.findTarget(root.left, search_val):
+                    return True
+        if search_val > root.val:
+            if root.right is not None:
+                if self.findTarget(root.right, search_val):
+                    return True
+
+        return False
 
 
 sol = Solution()
-print(sol.findTarget(root=[5, 3, 6, 2, 4, None, 7], k=28))
+node=TreeNode([5, 3, 6, 2, 4, None, 7])
+print(sol.findTarget(root=, k=28))

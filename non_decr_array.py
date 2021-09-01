@@ -31,28 +31,39 @@ from typing import List
 
 class Solution:
     def checkPossibility(self, nums: List[int]) -> bool:
-        local_max = 0
-        ind = len(nums) - 1
-        if ind < 3:
+        total = len(nums)
+        if total < 3:
             return True
+        local_min = 0
+        checkpoint = None
+        A = nums[0]
+        B = nums[1]
+        min_started = None
+        for ind in range(0, total - 1):
+            A = nums[ind]
+            B = nums[ind + 1]
 
-        while ind > 1:
-            A = nums[ind - 2]
-            B = nums[ind - 1]
-            C = nums[ind]
-            print(f'{A=} {B=} {C=} {local_max=} {ind=}')
-            if local_max == 2:
+            if A > B:
+                local_min += 1
+                min_started = A
+                if ind > 0:
+                    checkpoint = ind - 1
+            else:
+                if min_started is not None:
+                    if B < min_started:
+                        if checkpoint is not None:
+                            if B >= nums[checkpoint] and A >= nums[checkpoint]:
+                                min_started = None
+                            else:
+                                return False
+                    else:
+                        min_started = None
+
+            if local_min > 1:
                 return False
-            if A > B and B > C:
-                return False
-            if B > C:
-                local_max += 1
-            if A > C:
-                local_max += 1
-            ind -= 1
 
         return True
 
 
 sol = Solution()
-print(sol.checkPossibility([3, 4, 2, 3]))
+print(sol.checkPossibility([1, 4, 1, 2]))
